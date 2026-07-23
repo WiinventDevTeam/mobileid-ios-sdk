@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "MobileIdSdk"
-  s.version          = "1.0.1"
+  s.version          = "1.0.2"
   s.summary          = "MobileID SDK for iOS"
   s.description      = "MobileID mobile authentication SDK for iOS (binary distribution)."
   s.homepage         = "https://mobileid.vn"
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.platform         = :ios, "13.0"
   s.swift_version    = "5.0"
 
-  # Binary distribution: prebuilt MobileIdSdk framework.
+  # Binary distribution: prebuilt MobileIdSdk (upstream engine compiled in).
   s.vendored_frameworks = "MobileIdSdk.xcframework"
 
   s.pod_target_xcconfig = {

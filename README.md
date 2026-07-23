@@ -1,27 +1,73 @@
 # MobileID iOS SDK — Binary Distribution
 
-SDK xác thực số điện thoại di động cho iOS
+SDK xác thực số điện thoại di động cho iOS.
 
-Yêu cầu: iOS 13.0+, Swift 5, CocoaPods.
+Yêu cầu: iOS 13.0+, Swift 5.
 
-## Cài đặt (CocoaPods)
+Bản phân phối có **2 flavor**, cùng module `MobileIdSdk` (`import MobileIdSdk` /
+`@import MobileIdSdk` không đổi giữa 2 bản — chọn **đúng 1** bản, không cài song song):
 
-1. Trong `Podfile`, thêm pod trỏ tới Git repo bằng tag phiên bản:
+| Flavor | Pod | Link | Đối tác phải làm ở Xcode |
+|---|---|---|---|
+| **Dynamic** | `MobileIdSdk` | dynamic framework | Embed & Sign (CocoaPods lo tự động) |
+| **Static** | `MobileIdSdk-Static` | link thẳng vào app | Không embed, không `use_frameworks!` |
 
-   ```ruby
-   platform :ios, '13.0'
+Bản **static** gọn hơn khi tích hợp: không cần Embed & Sign, không bắt `use_frameworks!`.
+Đánh đổi: khi kéo thủ công phải tự thêm privacy manifest (xem mục Static + thủ công).
 
-   target 'MyApp' do
-     use_frameworks!
-     pod 'MobileIdSdk', :git => 'https://github.com/WiinventDevTeam/mobileid-ios-sdk.git', :tag => '1.0.1'
-   end
-   ```
+---
 
-2. Cài đặt:
+## 1. Dynamic + CocoaPods
 
-   ```bash
-   pod install
-   ```
+```ruby
+platform :ios, '13.0'
+
+target 'MyApp' do
+  use_frameworks!
+  pod 'MobileIdSdk', :git => 'https://github.com/WiinventDevTeam/mobileid-ios-sdk.git', :tag => '1.0.2'
+end
+```
+
+```bash
+pod install
+```
+
+## 2. Static + CocoaPods (khuyến nghị cho tích hợp gọn)
+
+Không cần `use_frameworks!`. Privacy manifest tự đi kèm qua resource bundle.
+
+```ruby
+platform :ios, '13.0'
+
+target 'MyApp' do
+  pod 'MobileIdSdk-Static', :git => 'https://github.com/WiinventDevTeam/mobileid-ios-sdk.git', :tag => '1.0.2'
+end
+```
+
+```bash
+pod install
+```
+
+## 3. Dynamic + kéo thủ công (không dùng CocoaPods)
+
+1. Kéo `MobileIdSdk.xcframework` vào project.
+2. Target → General → **Frameworks, Libraries & Embedded Content** → chọn **Embed & Sign**.
+
+Privacy manifest nằm sẵn trong framework bundle, tự đi theo khi embed.
+
+## 4. Static + kéo thủ công
+
+1. Kéo `static/MobileIdSdk.xcframework` vào project.
+2. Target → General → **Frameworks, Libraries & Embedded Content** → chọn **Do Not Embed**
+   (static link thẳng vào app, không embed).
+3. **Bắt buộc**: kéo `PrivacyInfo.xcprivacy` (kèm trong bản phân phối) vào
+   **Build Phases → Copy Bundle Resources** của app target.
+
+> **Quan trọng**: bước 3 không được bỏ. Privacy manifest nằm trong static framework
+> **không** được Apple gom vào App Privacy Report — phải copy thẳng vào app bundle,
+> nếu không App Store review có thể cảnh báo thiếu privacy manifest.
+
+---
 
 ## Sử dụng nhanh (Swift)
 

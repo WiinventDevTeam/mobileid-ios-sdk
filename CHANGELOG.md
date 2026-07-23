@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.2] - 2026-07-23
+
+### Added
+- Thêm bản phân phối **static** qua `MobileIdSdk-Static.podspec`, cùng module
+  `MobileIdSdk` nên code tích hợp vẫn dùng `import MobileIdSdk` / `@import MobileIdSdk`.
+- Thêm `static/MobileIdSdk.xcframework` để đối tác link SDK mà không cần Embed & Sign
+  hoặc `use_frameworks!`.
+- Ship `PrivacyInfo.xcprivacy` standalone để bản static được copy vào app bundle qua
+  `MobileIdSdk_Privacy.bundle` và được Apple Privacy Report gom đúng.
+
+### Changed
+- Cập nhật README và Example-Podfile với cả 2 hướng tích hợp dynamic/static.
+
 ## [1.0.1] - 2026-07-14
 
 ### Added
