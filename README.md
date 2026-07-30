@@ -82,7 +82,9 @@ sdk.configure(configUrl: "https://your-backend.com/api/sdk-config", success: {
     // 2. Kiểm tra coverage rồi xác thực.
     sdk.checkCoverageWithPhoneNumber("84901234567", success: { _ in
         sdk.doAuthentication(loginHint: "84901234567", success: { response in
-            // Gửi authorization code trong `response` về backend để đổi token.
+            // `response` là redirect URI đầy đủ, không phải code. Tách `code` rồi gửi backend.
+            let code = URLComponents(string: response ?? "")?
+                .queryItems?.first { $0.name == "code" }?.value
         }, fail: { error in
             print(error.errorMessage ?? "")
         })
@@ -109,7 +111,8 @@ MobileID *sdk = [[MobileID alloc] init];
                               success:^(NSString * _Nonnull response) {
         [sdk doAuthenticationWithLoginHint:@"84901234567"
                                    success:^(NSString * _Nullable authResponse) {
-            // Gửi authorization code về backend để đổi token.
+            // `authResponse` là redirect URI đầy đủ, không phải code.
+            // Tách query param `code` (NSURLComponents) rồi gửi backend để đổi token.
         } fail:^(MobileIdError * _Nonnull error) {
             NSLog(@"%@", error.errorMessage);
         }];
