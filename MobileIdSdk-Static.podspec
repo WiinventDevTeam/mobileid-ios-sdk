@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = "MobileIdSdk-Static"
   s.module_name      = "MobileIdSdk"
-  s.version          = "1.0.2"
+  s.version          = "1.0.3"
   s.summary          = "MobileID SDK for iOS (static distribution)"
   s.description      = "MobileID mobile authentication SDK for iOS (static binary distribution)."
   s.homepage         = "https://mobileid.vn"

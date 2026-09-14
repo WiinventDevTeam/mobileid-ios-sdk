@@ -11455,6 +11455,123 @@
           },
           {
             "kind": "Var",
+            "name": "rawResponse",
+            "printedName": "rawResponse",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError(py)rawResponse",
+            "mangledName": "$s11MobileIdSdk0aB5ErrorC11rawResponseSSSgvp",
+            "moduleName": "MobileIdSdk",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "ObjC"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError(im)rawResponse",
+                "mangledName": "$s11MobileIdSdk0aB5ErrorC11rawResponseSSSgvg",
+                "moduleName": "MobileIdSdk",
+                "implicit": true,
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError(im)setRawResponse:",
+                "mangledName": "$s11MobileIdSdk0aB5ErrorC11rawResponseSSSgvs",
+                "moduleName": "MobileIdSdk",
+                "implicit": true,
+                "declAttributes": [
+                  "ObjC"
+                ],
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:11MobileIdSdk0aB5ErrorC11rawResponseSSSgvM",
+                "mangledName": "$s11MobileIdSdk0aB5ErrorC11rawResponseSSSgvM",
+                "moduleName": "MobileIdSdk",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
             "name": "code",
             "printedName": "code",
             "children": [
@@ -11501,7 +11618,7 @@
           {
             "kind": "Constructor",
             "name": "init",
-            "printedName": "init(errorCode:errorMessage:)",
+            "printedName": "init(errorCode:errorMessage:rawResponse:)",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -11530,13 +11647,28 @@
                 ],
                 "hasDefaultArg": true,
                 "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
               }
             ],
             "declKind": "Constructor",
-            "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError(im)initWithErrorCode:errorMessage:",
-            "mangledName": "$s11MobileIdSdk0aB5ErrorC9errorCode0E7MessageAcA0abdF0O_SSSgtcfc",
+            "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError(im)initWithErrorCode:errorMessage:rawResponse:",
+            "mangledName": "$s11MobileIdSdk0aB5ErrorC9errorCode0E7Message11rawResponseAcA0abdF0O_SSSgAItcfc",
             "moduleName": "MobileIdSdk",
-            "objc_name": "initWithErrorCode:errorMessage:",
+            "objc_name": "initWithErrorCode:errorMessage:rawResponse:",
             "declAttributes": [
               "AccessControl",
               "ObjC"
@@ -12396,6 +12528,100 @@
             "declAttributes": [
               "AccessControl",
               "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "configure",
+            "printedName": "configure(configUrl:headers:success:fail:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Swift.String : Swift.String]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.String) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(MobileIdSdk.MobileIdError) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "MobileIdError",
+                    "printedName": "MobileIdSdk.MobileIdError",
+                    "usr": "c:@M@MobileIdSdk@objc(cs)MobileIdError"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@MobileIdSdk@objc(cs)MobileID(im)configureWithConfigUrl:headers:successWithData:fail:",
+            "mangledName": "$s11MobileIdSdk0A2IDC9configure9configUrl7headers7success4failySS_SDyS2SGSgySScyAA0aB5ErrorCctF",
+            "moduleName": "MobileIdSdk",
+            "objc_name": "configureWithConfigUrl:headers:successWithData:fail:",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -14635,7 +14861,7 @@
     {
       "filePath": "\/Users\/datnguyenquoc\/Documents\/GitHub\/mobile-id-ios\/Sources\/MobileIdSdk\/MobileIdError.swift",
       "kind": "StringLiteral",
-      "offset": 621,
+      "offset": 680,
       "length": 2,
       "value": "\"\""
     },

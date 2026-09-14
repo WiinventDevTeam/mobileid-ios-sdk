@@ -7,10 +7,10 @@ Yêu cầu: iOS 13.0+, Swift 5.
 Bản phân phối có **2 flavor**, cùng module `MobileIdSdk` (`import MobileIdSdk` /
 `@import MobileIdSdk` không đổi giữa 2 bản — chọn **đúng 1** bản, không cài song song):
 
-| Flavor | Pod | Link | Đối tác phải làm ở Xcode |
-|---|---|---|---|
-| **Dynamic** | `MobileIdSdk` | dynamic framework | Embed & Sign (CocoaPods lo tự động) |
-| **Static** | `MobileIdSdk-Static` | link thẳng vào app | Không embed, không `use_frameworks!` |
+| Flavor      | Pod                  | Link               | Đối tác phải làm ở Xcode             |
+| ----------- | -------------------- | ------------------ | ------------------------------------ |
+| **Dynamic** | `MobileIdSdk`        | dynamic framework  | Embed & Sign (CocoaPods lo tự động)  |
+| **Static**  | `MobileIdSdk-Static` | link thẳng vào app | Không embed, không `use_frameworks!` |
 
 Bản **static** gọn hơn khi tích hợp: không cần Embed & Sign, không bắt `use_frameworks!`.
 Đánh đổi: khi kéo thủ công phải tự thêm privacy manifest (xem mục Static + thủ công).
@@ -76,15 +76,14 @@ import MobileIdSdk
 
 let sdk = MobileID()
 
-// 1. Resolve cấu hình từ backend.
-sdk.configure(configUrl: "https://your-backend.com/api/sdk-config", success: {
+// 1. Resolve cấu hình từ backend (nhận chuỗi raw JSON đã loại bỏ internal payload).
+sdk.configure(configUrl: "https://your-backend.com/api/sdk-config", success: { rawJson in
+    print("Config thành công: \(rawJson)")
 
     // 2. Kiểm tra coverage rồi xác thực.
     sdk.checkCoverageWithPhoneNumber("84901234567", success: { _ in
         sdk.doAuthentication(loginHint: "84901234567", success: { response in
-            // `response` là redirect URI đầy đủ, không phải code. Tách `code` rồi gửi backend.
-            let code = URLComponents(string: response ?? "")?
-                .queryItems?.first { $0.name == "code" }?.value
+            // Gửi authorization code trong `response` về backend để đổi token.
         }, fail: { error in
             print(error.errorMessage ?? "")
         })
@@ -94,8 +93,13 @@ sdk.configure(configUrl: "https://your-backend.com/api/sdk-config", success: {
 
 }, fail: { error in
     // Lỗi resolve cấu hình (mạng, backend từ chối, app không được phép…).
-    print(error.errorMessage ?? "")
+    print("Config error: \(error.errorMessage ?? "")")
+    if let raw = error.rawResponse {
+        print("Raw response: \(raw)")
+    }
 })
+
+// Hoặc overload tương thích ngược: sdk.configure(configUrl: ..., success: { ... }, fail: { ... })
 ```
 
 ## Sử dụng nhanh (Objective-C)
@@ -106,13 +110,13 @@ sdk.configure(configUrl: "https://your-backend.com/api/sdk-config", success: {
 MobileID *sdk = [[MobileID alloc] init];
 [sdk configureWithConfigUrl:@"https://your-backend.com/api/sdk-config"
                     headers:nil
-                    success:^{
+            successWithData:^(NSString * _Nonnull rawJson) {
+    NSLog(@"Config thành công: %@", rawJson);
     [sdk checkCoverageWithPhoneNumber:@"84901234567"
                               success:^(NSString * _Nonnull response) {
         [sdk doAuthenticationWithLoginHint:@"84901234567"
                                    success:^(NSString * _Nullable authResponse) {
-            // `authResponse` là redirect URI đầy đủ, không phải code.
-            // Tách query param `code` (NSURLComponents) rồi gửi backend để đổi token.
+            // Gửi authorization code về backend để đổi token.
         } fail:^(MobileIdError * _Nonnull error) {
             NSLog(@"%@", error.errorMessage);
         }];
@@ -120,8 +124,11 @@ MobileID *sdk = [[MobileID alloc] init];
         NSLog(@"%@", error.errorMessage);
     }];
 } fail:^(MobileIdError * _Nonnull error) {
-    NSLog(@"config: %@", error.errorMessage);
+    NSLog(@"config error: %@, raw: %@", error.errorMessage, error.rawResponse);
 }];
+
+// Hoặc overload tương thích ngược:
+// [sdk configureWithConfigUrl:... headers:nil success:^{ ... } fail:^(MobileIdError *error) { ... }];
 ```
 
 `configure` nhận thêm tham số `headers` (tùy chọn) nếu backend của bạn yêu cầu header
@@ -130,8 +137,8 @@ khi không cần.
 
 ### Xử lý lỗi
 
-`MobileIdError` gồm `errorCode` (enum), `code` (string ổn định, khớp Android/Dart) và
-`errorMessage`. Nên xử lý theo `code` / `errorCode`, **không** theo integer raw value.
+`MobileIdError` gồm `errorCode` (enum), `code` (string ổn định, khớp Android/Dart),
+`errorMessage` và `rawResponse` (chứa phản hồi thô từ server khi cấu hình lỗi). Nên xử lý theo `code` / `errorCode`, **không** theo integer raw value.
 
 > **Lưu ý**: xác thực qua mạng di động cần thiết bị thật kết nối **cellular data** —
 > không chạy được trên Wifi hoặc emulator.

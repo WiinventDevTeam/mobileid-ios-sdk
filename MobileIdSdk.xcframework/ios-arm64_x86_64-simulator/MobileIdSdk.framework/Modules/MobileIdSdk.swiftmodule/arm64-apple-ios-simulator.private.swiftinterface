@@ -304,11 +304,12 @@ public enum IPEnvironment {
 @objc public class MobileIdError : ObjectiveC.NSObject {
   @objc public var errorCode: MobileIdSdk.MobileIdErrorCode
   @objc public var errorMessage: Swift.String?
+  @objc public var rawResponse: Swift.String?
   @objc public var code: Swift.String {
     @objc get
   }
   #if compiler(>=5.3) && $NonescapableTypes
-  @objc public init(errorCode: MobileIdSdk.MobileIdErrorCode = .coverageUnavailable, errorMessage: Swift.String? = "")
+  @objc public init(errorCode: MobileIdSdk.MobileIdErrorCode = .coverageUnavailable, errorMessage: Swift.String? = "", rawResponse: Swift.String? = nil)
   #endif
   @objc deinit
 }
@@ -345,6 +346,9 @@ public enum IPEnvironment {
   @objc public func setEnv(_ env: MobileIdSdk.MobileIdEnvironment)
   @objc public func setClientId(_ clientId: Swift.String)
   @objc public func setRedirectUri(_ redirectUri: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @objc(configureWithConfigUrl:headers:successWithData:fail:) public func configure(configUrl: Swift.String, headers: [Swift.String : Swift.String]? = nil, success: @escaping (Swift.String) -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
+  #endif
   #if compiler(>=5.3) && $NonescapableTypes
   @objc public func configure(configUrl: Swift.String, headers: [Swift.String : Swift.String]? = nil, success: @escaping () -> Swift.Void, fail: @escaping (MobileIdSdk.MobileIdError) -> Swift.Void)
   #endif

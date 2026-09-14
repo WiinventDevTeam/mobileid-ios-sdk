@@ -334,11 +334,15 @@ SWIFT_CLASS("_TtC11MobileIdSdk8MobileID")
 /// Resolve IP config từ backend tenant lúc runtime rồi tự áp (env/clientId/redirectUri).
 /// Consumer cung cấp configUrl — URL đầy đủ tới endpoint cấu hình của họ; SDK GET
 /// thẳng URL đó (không tự thêm path). IP client_id không còn hard-code trong app.
-/// Response chỉ cần chứa ipClientId, ipRedirectUri, environment — ở top-level hoặc
-/// trong “data” (không ép wrapper/format). headers (tùy chọn): header khách gắn vào
-/// request (vd Authorization) — SDK không quy định cơ chế auth. Callback trả về main thread.
-/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. The Swift
-/// default is not visible from ObjC, so the parameter is required there.
+/// Phiên bản này trả về chuỗi Raw JSON String (đã bóc tách loại bỏ blob mã hoá “payload”
+/// nội bộ của MobileID) để đối tác có thể nhận các thuộc tính tuỳ biến do server họ chèn thêm.
+/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. Selector là
+/// <code>configureWithConfigUrl:headers:successWithData:fail:</code>. Callback trả về main thread.
+- (void)configureWithConfigUrl:(NSString * _Nonnull)configUrl headers:(NSDictionary<NSString *, NSString *> * _Nullable)headers successWithData:(void (^ _Nonnull)(NSString * _Nonnull))success fail:(void (^ _Nonnull)(MobileIdError * _Nonnull))fail;
+/// Resolve IP config từ backend tenant lúc runtime rồi tự áp (env/clientId/redirectUri).
+/// Phiên bản tương thích ngược (callback không nhận tham số data).
+/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. Selector là
+/// <code>configureWithConfigUrl:headers:success:fail:</code>. Callback trả về main thread.
 - (void)configureWithConfigUrl:(NSString * _Nonnull)configUrl headers:(NSDictionary<NSString *, NSString *> * _Nullable)headers success:(void (^ _Nonnull)(void))success fail:(void (^ _Nonnull)(MobileIdError * _Nonnull))fail;
 - (void)setCheckCoverageUrl:(NSString * _Nonnull)url;
 - (void)setAuthorizationUrl:(NSString * _Nonnull)url;
@@ -367,10 +371,11 @@ SWIFT_CLASS("_TtC11MobileIdSdk13MobileIdError")
 @interface MobileIdError : NSObject
 @property (nonatomic) enum MobileIdErrorCode errorCode;
 @property (nonatomic, copy) NSString * _Nullable errorMessage;
+@property (nonatomic, copy) NSString * _Nullable rawResponse;
 /// String form of <code>errorCode</code> (matches Android / Dart). Prefer this over
 /// the integer raw value when surfacing codes to a backend or Flutter.
 @property (nonatomic, readonly, copy) NSString * _Nonnull code;
-- (nonnull instancetype)initWithErrorCode:(enum MobileIdErrorCode)errorCode errorMessage:(NSString * _Nullable)errorMessage OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithErrorCode:(enum MobileIdErrorCode)errorCode errorMessage:(NSString * _Nullable)errorMessage rawResponse:(NSString * _Nullable)rawResponse OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -730,11 +735,15 @@ SWIFT_CLASS("_TtC11MobileIdSdk8MobileID")
 /// Resolve IP config từ backend tenant lúc runtime rồi tự áp (env/clientId/redirectUri).
 /// Consumer cung cấp configUrl — URL đầy đủ tới endpoint cấu hình của họ; SDK GET
 /// thẳng URL đó (không tự thêm path). IP client_id không còn hard-code trong app.
-/// Response chỉ cần chứa ipClientId, ipRedirectUri, environment — ở top-level hoặc
-/// trong “data” (không ép wrapper/format). headers (tùy chọn): header khách gắn vào
-/// request (vd Authorization) — SDK không quy định cơ chế auth. Callback trả về main thread.
-/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. The Swift
-/// default is not visible from ObjC, so the parameter is required there.
+/// Phiên bản này trả về chuỗi Raw JSON String (đã bóc tách loại bỏ blob mã hoá “payload”
+/// nội bộ của MobileID) để đối tác có thể nhận các thuộc tính tuỳ biến do server họ chèn thêm.
+/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. Selector là
+/// <code>configureWithConfigUrl:headers:successWithData:fail:</code>. Callback trả về main thread.
+- (void)configureWithConfigUrl:(NSString * _Nonnull)configUrl headers:(NSDictionary<NSString *, NSString *> * _Nullable)headers successWithData:(void (^ _Nonnull)(NSString * _Nonnull))success fail:(void (^ _Nonnull)(MobileIdError * _Nonnull))fail;
+/// Resolve IP config từ backend tenant lúc runtime rồi tự áp (env/clientId/redirectUri).
+/// Phiên bản tương thích ngược (callback không nhận tham số data).
+/// Note for Objective-C: pass <code>nil</code> for <code>headers</code> when you have none. Selector là
+/// <code>configureWithConfigUrl:headers:success:fail:</code>. Callback trả về main thread.
 - (void)configureWithConfigUrl:(NSString * _Nonnull)configUrl headers:(NSDictionary<NSString *, NSString *> * _Nullable)headers success:(void (^ _Nonnull)(void))success fail:(void (^ _Nonnull)(MobileIdError * _Nonnull))fail;
 - (void)setCheckCoverageUrl:(NSString * _Nonnull)url;
 - (void)setAuthorizationUrl:(NSString * _Nonnull)url;
@@ -763,10 +772,11 @@ SWIFT_CLASS("_TtC11MobileIdSdk13MobileIdError")
 @interface MobileIdError : NSObject
 @property (nonatomic) enum MobileIdErrorCode errorCode;
 @property (nonatomic, copy) NSString * _Nullable errorMessage;
+@property (nonatomic, copy) NSString * _Nullable rawResponse;
 /// String form of <code>errorCode</code> (matches Android / Dart). Prefer this over
 /// the integer raw value when surfacing codes to a backend or Flutter.
 @property (nonatomic, readonly, copy) NSString * _Nonnull code;
-- (nonnull instancetype)initWithErrorCode:(enum MobileIdErrorCode)errorCode errorMessage:(NSString * _Nullable)errorMessage OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithErrorCode:(enum MobileIdErrorCode)errorCode errorMessage:(NSString * _Nullable)errorMessage rawResponse:(NSString * _Nullable)rawResponse OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
