@@ -1,0 +1,7 @@
+.DS_Store
+.ruby-lsp/
+build/
+DerivedData/
+Pods/
+*.xcuserstate
+xcuserdata/

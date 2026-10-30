@@ -1,0 +1,12 @@
+platform :ios, '13.0'
+
+target 'MyApp' do
+  # Chọn ĐÚNG MỘT trong hai bản (cùng module `MobileIdSdk`, không cài song song).
+
+  # Bản dynamic — cần use_frameworks!.
+  use_frameworks!
+  pod 'MobileIdSdk', :git => 'https://github.com/WiinventDevTeam/mobileid-ios-sdk.git', :tag => '1.1.0'
+
+  # Bản static — bỏ use_frameworks! ở trên, không cần Embed & Sign.
+  # pod 'MobileIdSdk-Static', :git => 'https://github.com/WiinventDevTeam/mobileid-ios-sdk.git', :tag => '1.1.0'
+end
